@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.*;
+
+public class CalculatorApp extends JFrame {
+    private JTextField firstNumberField, secondNumberField, resultField;
+    private JButton addButton, subtractButton, multiplyButton, divideButton, clearButton;
+
+    public CalculatorApp() {
+        setTitle("Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(350, 250);
+        setLocationRelativeTo(null);
+
+        // Create the UI components
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        firstNumberField = new JTextField();
+        secondNumberField = new JTextField();
+        resultField = new JTextField();
+        resultField.setEditable(false);
+
+        addButton = new JButton("+");
+        subtractButton = new JButton("-");
+        multiplyButton = new JButton("*");
+        divideButton = new JButton("/");
+        clearButton = new JButton("Clear");
+
+        // Add the components to the panel
+        panel.add(new JLabel("First Number:"));
+        panel.add(firstNumberField);
+        panel.add(new JLabel("Second Number:"));
+        panel.add(secondNumberField);
+        panel.add(new JLabel("Result:"));
+        panel.add(resultField);
+        panel.add(addButton);
+        panel.add(subtractButton);
+        panel.add(multiplyButton);
+        panel.add(divideButton);
+        panel.add(new JPanel());
+        panel.add(clearButton);
+
+        // Add action listeners to the buttons
+        addButton.addActionListener(e -> performCalculation('+'));
+        subtractButton.addActionListener(e -> performCalculation('-'));
+        multiplyButton.addActionListener(e -> performCalculation('*'));
+        divideButton.addActionListener(e -> performCalculation('/'));
+        clearButton.addActionListener(e -> clearFields());
+
+        // Add the panel to the frame
+        add(panel, BorderLayout.CENTER);
+    }
+
+    private void performCalculation(char operation) {
+        try {
+            double firstNumber = Double.parseDouble(firstNumberField.getText());
+            double secondNumber = Double.parseDouble(secondNumberField.getText());
+            double result;
+
+            switch (operation) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    break;
+                case '-':
+                    result = firstNumber - secondNumber;
+                    break;
+                case '*':
+                    result = firstNumber * secondNumber;
+                    break;
+                case '/':
+                    result = firstNumber / secondNumber;
+                    break;
+                default:
+                    result = 0;
+            }
+
+            resultField.setText(String.valueOf(result));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void clearFields() {
+        firstNumberField.setText("");
+        secondNumberField.setText("");
+        resultField.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            CalculatorApp app = new CalculatorApp();
+            app.setVisible(true);
+        });
+    }
+}
